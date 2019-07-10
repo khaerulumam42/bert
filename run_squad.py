@@ -28,6 +28,7 @@ import optimization
 import tokenization
 import six
 import tensorflow as tf
+import scoring
 
 flags = tf.flags
 
@@ -1274,7 +1275,11 @@ def main(_):
                       FLAGS.n_best_size, FLAGS.max_answer_length,
                       FLAGS.do_lower_case, output_prediction_file,
                       output_nbest_file, output_null_log_odds_file)
+    
+    EM, f1 = scoring.calculate(FLAGS.predict_file, os.path.join(FLAGS.output_dir, "predictions.json"))
 
+    print("===================== Calculate EM and f1 score =================")
+    print("EM score is {} and f1 score is {}".format(EM, f1))
 
 if __name__ == "__main__":
   flags.mark_flag_as_required("vocab_file")
