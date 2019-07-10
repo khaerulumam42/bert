@@ -47,23 +47,24 @@ def score(flatDev, flatPred):
     # initiate scoring
     # EM = exact matching is when the answers is same with first answer on three answer
     # f1 = if answer from model in between 3 answers provide in dev, it calculate as True prediction
-    EM, f1 = 0, 0
+    EM, f1, count = 0, 0, 0
 
     # looping for key(qas id) to see what answer by model in flatPred
     for key in flatPred.keys():
         # use set to avoid double adding score, bcs sometimes 
         # there are same answers is more than 1 in 3 answers
+        count += 1
         for i, answer in enumerate(set(flatDev[key])):
-            if i == 0 and flatPred[key] == answer:
+            if flatPred[key].lower() == answer.lower():
                 EM += 1
                 f1 += 1
-            elif flatPred[key] == answer:
+            elif flatPred[key].lower() in answer.lower() or answer.lower() in flatPred[key].lower():
                 f1 += 1
             else:
                 pass
     
-    EM = EM*100/len(flatPred.keys())
-    f1 = f1*100/len(flatPred.keys())
+    EM = EM*100/count
+    f1 = f1*100/count
     return EM, f1
 
 def calculate(devFile, predFile):
