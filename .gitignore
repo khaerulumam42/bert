@@ -116,6 +116,8 @@ dmypy.json
 .pyre/
 
 
-#cdataset
-
+# dataset
 dataset/
+
+# output
+squad_id/
